@@ -1,0 +1,29 @@
+from sklearn.svm import LinearSVC
+from sklearn.datasets import load_iris
+from sklearn.feature_selection import SelectFromModel
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+from sklearn.ensemble import ExtraTreesClassifier
+import pandas as pd
+import help_functions
+import numpy as np
+iris = load_iris()
+print iris.target
+training_set= help_functions.generate_set("C:/Users/admin/PycharmProjects/Forex/training_set.csv")
+vector=[]
+for i in range(0,len(training_set[0])):
+    vector.append([training_set[0][i],training_set[1][i],training_set[2][i],training_set[3][i],training_set[4][i]])
+
+print np.array(training_set[5]).shape
+X, y = np.array(vector).shape, np.array(training_set[5]).shape
+
+clf = ExtraTreesClassifier()
+clf = clf.fit(X, y)
+print clf.feature_importances_
+model = SelectFromModel(clf, prefit=True)
+X_new = model.transform(X)
+X_new.shape
+
+#X_new = SelectKBest(chi2, k=2).fit_transform(X, y)
+#X_new.shape
+#print X_new

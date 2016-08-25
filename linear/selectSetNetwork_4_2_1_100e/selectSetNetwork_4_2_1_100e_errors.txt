@@ -1,0 +1,15 @@
+Training Set
+Mean Square Error: 6.4356257213e-05
+Root Mean Square Error: 0.00802223517562
+Median Square Error: 0.00475035279757
+Mean Absolute Error: 0.00475035279757
+Validation Set
+Mean Square Error: 6.78591002254e-05
+Root Mean Square Error: 0.00823766351737
+Median Square Error: 0.00445556933877
+Mean Absolute Error: 0.00445556933877
+Test Set
+Mean Square Error: 6.19965857517e-05
+Root Mean Square Error: 0.00787379106605
+Median Square Error: 0.00504740299916
+Mean Absolute Error: 0.00504740299916

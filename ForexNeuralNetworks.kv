@@ -1,0 +1,33 @@
+<Button>:
+    font_size: 16
+	color: 0,0,0,1
+	size_hint: 0.15, 0.05
+	pos_hint: {'top':1}
+
+<TextInput>:
+    font_size: 14
+    size_hint: 0.15, 0.05
+
+<FloatLayout>:
+	Button:
+	    text: "MLP Close"
+		pos_hint: {'top':1}
+		on_press: app.do_login()
+	Button:
+	    text: "MLP MA"
+		pos_hint: {"right":0.3, 'top':1}
+	Button:
+	    text: "RNN Close"
+		pos_hint: {"right":0.45, 'top':1}
+	Button:
+	    text: "RNN MA"
+		pos_hint: {"right":0.6, 'top':1}
+	Button:
+	    text: "Valdation"
+		pos_hint: {"right":0.75, 'top':1}
+	Button:
+	    text: "Contr Chart"
+		pos_hint: {"right":0.9, 'top':1}
+	TextInput:
+	    id: txt_inpt
+	    text: "test"
