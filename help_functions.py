@@ -60,7 +60,24 @@ def generate_set(file_name,file_name_to_scale,delete_columns): #OSTATNIA WARTOSC
     my_data = (my_data-mins)/(maxs-mins)
     return my_data, Y, date['Date']
 
-def rescale(set,min,max):
+
+def generate_sets(set_path,set_name):
+    sets = [None] * 9
+    sets[0], sets[1], sets[2] = \
+        generate_set(set_path + set_name + "_training_set.csv",
+                     set_path + set_name + "_EURUSD.csv", (0, 1))
+
+    sets[3], sets[4], sets[5] = \
+        generate_set(set_path + set_name + "_validation_set.csv",
+                     set_path + set_name + "_EURUSD.csv", (0, 1))
+
+    sets[6], sets[7], sets[8] = \
+        generate_set(set_path + set_name + "_test_set.csv",
+                     set_path + set_name + "_EURUSD.csv", (0, 1))
+    return sets
+
+
+def rescale(set, min, max):
     #set = sc.minmax_scale(set,feature_range=(min,max),copy=False)
     set2 = (set * (max - min)) + min
     return set2
