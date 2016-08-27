@@ -1,36 +1,22 @@
-import numpy
-import matplotlib.pyplot as plt
-import pandas
-import math
-from keras.models import Sequential
-from keras.layers import Dense, TimeDistributed, TimeDistributedDense
-from keras.layers import LSTM, Activation
-from sklearn.preprocessing import MinMaxScaler
+from __future__ import print_function
+from pybrain.datasets import SequentialDataSet
+from itertools import cycle
+from pybrain.tools.shortcuts import buildNetwork
+from pybrain.structure.modules import LSTMLayer
+from pybrain.supervised import RPropMinusTrainer,BackpropTrainer
+from sys import stdout
 from help_functions import *
+import matplotlib.pyplot as plt
 
-class reccurentNetwork:
-    global sets, model
 
-    def generate_sets(self,set_path,set_name):
-        global sets
-        sets = generate_sets(set_path, set_name)
-        return sets
+set_path = "/home/adminz/repo/mgr/sets/"
+save_results_path = "/home/adminz/results/RNN_close/"
+set_name = "close"
 
-    def train_network(self,epochs=1):
-        global model
-        trX = numpy.reshape(sets[0], (sets[0].shape[0], 1, sets[0].shape[1])) # X
-        trY = sets[1] # Y
-        model = Sequential([
-            # TimeDistributedDense(10,input_dim=5),
-            # Dense(3,input_dim=5),
-            LSTM(6, input_dim=sets[0].shape[1], return_sequences=True),
-            LSTM(9, input_dim=5),
-            Dense(1)
-        ])
-        model.compile(loss='mean_squared_error', optimizer='adam')
-        model.fit(trX, trY, nb_epoch=epochs, batch_size=1, verbose=1)
-
-    def test_network(self):
-        trX = numpy.reshape(sets[0], (sets[0].shape[0], 1, sets[0].shape[1]))
-        print(model.predict(trX))
+sets = generate_sets(set_path, set_name)
+ds = generate_sequential_data_set(sets[0],sets[1])
+n = generate_rnn_network(input_neurons=len(sets[0][0]),hidden_neurons=9,output_neurons=1)
+trained_network,train_error=train_network(network=n,data_set=ds,epochs=10)
+generate_plots_and_errors(save_results_path=save_results_path,set_name=set_name,
+                          network=trained_network,train_errors=train_error, sets=sets)
 

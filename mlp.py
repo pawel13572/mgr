@@ -35,6 +35,8 @@ def full_evaluate_network(network_type,input,output,hidden,epochs,l_rate,network
 
     trainer = BackpropTrainer(network, ds, learningrate=l_rate, verbose=False)
     trainer.train()
+    trainer.trainingErrors()
+    trainer.ge
     errors=[]
     errors.append(trainer.trainEpochs(epochs=1))
     print errors
