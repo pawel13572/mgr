@@ -22,10 +22,10 @@ def evaluate_errors(sets,path):
     error_train=0
     for i in range(0,3):
         real, predict = sets[i], sets[i + 3]
-        if(i==0):
+        if(i == 0):
             text_file.write("Training Set\n")
             error_train=mean_squared_error(real, predict)
-        elif(i==1):
+        elif(i == 1):
             text_file.write("Validation Set\n")
             error_val = mean_squared_error(real, predict)
         else:
@@ -153,13 +153,17 @@ def generate_linear_network(input_neurons,output_neurons):
 
 
 def train_network(network,data_set,epochs=10, expected_train_error=0):
-    trainer = BackpropTrainer(network, dataset=data_set)
+    trainer = BackpropTrainer(network, dataset=data_set,learningrate=0.1)
     train_errors=[] # list of all errors to plot the error chart
-    actual_error = 0
+    actual_error = 9999
+    i=0
     if expected_train_error != 0:
         while actual_error > expected_train_error:
+            i = i + 1
             trainer.trainEpochs(epochs=1)
             actual_error = trainer.testOnData()
+            if i%100==0:
+                print(i, actual_error)
             train_errors.append(actual_error)
     else:
         for i in range(0,epochs):
@@ -172,7 +176,7 @@ def train_network(network,data_set,epochs=10, expected_train_error=0):
 
 
 def generate_plots_and_errors(save_results_path, set_name, network, train_errors, sets):
-    path = save_results_path+set_name
+    path = save_results_path+'/'
 
     train = []
     validate = []
@@ -199,16 +203,16 @@ def generate_plots_and_errors(save_results_path, set_name, network, train_errors
     validate_df = rescale(validate_df, min, max)
     test_df = rescale(test_df, min, max)
 
-    sets=[training_setY,validation_setY,test_setY,train_df,validate_df,test_df]
-    error_train,error_val=evaluate_errors(sets,path)
+    sets2=[training_setY,validation_setY,test_setY,train_df,validate_df,test_df]
+    error_train, error_val = evaluate_errors(sets2,path)
 
-    #save_network(network,path)
+    save_network(network,path)
 
-    #save_plots(training_setY, "Rzeczywiste", train_df, "Wytrenowane", sets[2], path, "train")
-    #save_plots(test_setY, "Rzeczywiste", test_df, "Predykcja", sets[8], path, "test")
-    #save_error_plot(path,"errors",train_errors)
-    print(len(sets[2]),sets[2])
+    save_plots(training_setY, "Rzeczywiste", train_df, "Wytrenowane", sets[2], path, "train")
+    save_plots(test_setY, "Rzeczywiste", test_df, "Predykcja", sets[8], path, "test")
+    save_error_plot(path,"errors",train_errors)
 
+    return error_train, error_val
 
 def save_error_plot(path,plot_name,list_of_errors):
     plt.plot(list_of_errors)
@@ -218,15 +222,15 @@ def save_error_plot(path,plot_name,list_of_errors):
     plt.close()
 
 def save_plots(A, labelA, B, labelB, date, path, plot_name):
-    #x_axis = [dt.datetime.strptime(d, '%d.%m.%Y').date() for d in date]
-    #plt.plot(x_axis, A, label=labelA)
-    #plt.plot(x_axis, B, label=labelB)
+    x_axis = [dt.datetime.strptime(d, '%d.%m.%Y').date() for d in date]
+    plt.plot(x_axis, A, label=labelA)
+    plt.plot(x_axis, B, label=labelB)
     plt.gcf().autofmt_xdate()
     plt.legend()
     plt.savefig(path + '_' + plot_name+'.jpg', format='jpg', dpi=1200)
     plt.close()
 
 def save_network(network,path):
-    networkk = open(path+"_network", 'wb')
+    networkk = open(path+ "_network", 'wb')
     pickle.dump(network, networkk)
     networkk.close()
